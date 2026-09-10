@@ -1,0 +1,689 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GMG Training Vote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600;700&display=swap">
+
+<style>
+  :root {
+    --sapphire:     #20274C;
+    --cobalt:       #2658F2;
+    --cobalt-mid:   #1E48D4;
+    --cobalt-light: #EBF0FE;
+    --cobalt-text:  #1738A8;
+    --bg:           #E9EFEF;
+    --surface:      #FFFFFF;
+    --surface-2:    #F3F6F6;
+    --border:       #D0DADA;
+    --accent:       #2658F2;
+    --accent-mid:   #1E48D4;
+    --accent-light: #EBF0FE;
+    --accent-text:  #1738A8;
+    --text-1:       #20274C;
+    --text-2:       #4A5270;
+    --text-3:       #8A93B2;
+    --success:      #0D6E4F;
+    --success-bg:   #E7F5EE;
+    --warn:         #B35A00;
+    --warn-bg:      #FFF2E0;
+    --shadow-sm:    0 1px 2px rgba(32,39,76,.06), 0 2px 8px rgba(32,39,76,.04);
+    --shadow-md:    0 2px 6px rgba(32,39,76,.10), 0 8px 24px rgba(32,39,76,.08);
+    --r:            10px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg:           #0E1225;
+      --surface:      #181F3E;
+      --surface-2:    #121830;
+      --border:       #262E58;
+      --accent:       #4A79FF;
+      --accent-mid:   #3360E8;
+      --accent-light: #141B40;
+      --accent-text:  #7FA1FF;
+      --text-1:       #E8EBF8;
+      --text-2:       #8C98C8;
+      --text-3:       #4A5580;
+      --success:      #34D399;
+      --success-bg:   #0A2820;
+      --warn:         #FBBF24;
+      --warn-bg:      #201500;
+      --shadow-sm:    0 1px 2px rgba(0,0,0,.4);
+      --shadow-md:    0 4px 20px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E1225; --surface: #181F3E; --surface-2: #121830; --border: #262E58;
+    --accent: #4A79FF; --accent-mid: #3360E8; --accent-light: #141B40; --accent-text: #7FA1FF;
+    --text-1: #E8EBF8; --text-2: #8C98C8; --text-3: #4A5580;
+    --success: #34D399; --success-bg: #0A2820; --warn: #FBBF24; --warn-bg: #201500;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow-md: 0 4px 20px rgba(0,0,0,.4);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Barlow', system-ui, sans-serif; background: var(--bg); color: var(--text-1); min-height: 100vh; padding: 0 16px 130px; }
+
+  /* ── Setup Banner ── */
+  .setup-banner {
+    background: #FFF3CD; border-bottom: 2px solid #F0A500;
+    color: #5A3A00; font-size: 13px; font-weight: 600;
+    text-align: center; padding: 10px 16px; margin: 0 -16px 0;
+    display: none;
+  }
+
+  /* ── Brand Header ── */
+  .brand-header { background: #20274C; margin: 0 -16px; padding: 0 16px; }
+  .brand-header-inner { max-width: 720px; margin: 0 auto; padding: 18px 0 14px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .gmg-logo svg { height: 32px; width: auto; display: block; }
+  .brand-dept { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.5); text-align: right; line-height: 1.4; }
+  .header-manager-btn {
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.10);
+    color: #fff;
+    border-radius: 7px;
+    padding: 8px 12px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .header-manager-btn:hover {
+    background: rgba(255,255,255,.18);
+    border-color: rgba(255,255,255,.55);
+  }
+  @media (max-width: 560px) {
+    .brand-header-inner { gap: 10px; }
+    .brand-dept { display: none; }
+    .header-manager-btn { padding: 7px 10px; }
+  }
+
+
+  /* ── Page Header ── */
+  .header { max-width: 720px; margin: 0 auto; padding: 36px 0 24px; text-align: center; }
+  .header-eyebrow {
+    display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--accent); background: var(--accent-light);
+    border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+    padding: 4px 14px; border-radius: 20px; margin-bottom: 16px;
+  }
+  .header h1 { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(28px, 5.5vw, 46px); font-weight: 700; line-height: 1.1; color: var(--text-1); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .02em; text-wrap: balance; }
+  .header p { font-size: 15px; line-height: 1.65; color: var(--text-2); max-width: 500px; margin: 0 auto 16px; text-wrap: balance; }
+  .req-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--warn); background: var(--warn-bg); border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent); padding: 5px 14px; border-radius: 20px; }
+
+  /* ── Fields ── */
+  .name-wrap { max-width: 720px; margin: 0 auto 16px; }
+  .name-label { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-2); margin-bottom: 7px; display: block; }
+  .name-input { width: 100%; padding: 11px 16px; font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--text-1); background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r); outline: none; transition: border-color .15s, box-shadow .15s; box-shadow: var(--shadow-sm); }
+  .name-input::placeholder { color: var(--text-3); }
+  .name-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent); }
+  .name-error { font-size: 12px; color: var(--warn); margin-top: 5px; display: none; font-weight: 500; }
+
+  /* ── Grid / Cards ── */
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 720px; margin: 0 auto; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--r); padding: 16px 18px; cursor: pointer; user-select: none; transition: border-color .15s, background .15s, box-shadow .15s, transform .1s; display: flex; gap: 12px; align-items: flex-start; box-shadow: var(--shadow-sm); }
+  .card:not(.locked):hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .card.locked { opacity: .38; cursor: not-allowed; pointer-events: none; }
+  .card.selected { border-color: var(--accent); background: var(--accent-light); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent); }
+  .card-check { flex-shrink: 0; width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid var(--border); background: var(--surface-2); display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: background .15s, border-color .15s; }
+  .card.selected .card-check { background: var(--accent); border-color: var(--accent); }
+  .card-check svg { display: none; }
+  .card.selected .card-check svg { display: block; }
+  .card-body { flex: 1; min-width: 0; }
+  .card-num { font-size: 10px; font-weight: 700; letter-spacing: .12em; color: var(--text-3); text-transform: uppercase; margin-bottom: 3px; font-family: 'Barlow Condensed', sans-serif; }
+  .card.selected .card-num { color: var(--accent); }
+  .card-title { font-size: 13.5px; font-weight: 600; line-height: 1.4; color: var(--text-1); margin-bottom: 3px; }
+  .card-desc { font-size: 11.5px; line-height: 1.5; color: var(--text-2); }
+
+  /* ── Sticky Bar ── */
+  .sticky-bar { position: fixed; bottom: 0; left: 0; right: 0; background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--border); padding: 14px 16px; z-index: 100; }
+  .sticky-inner { max-width: 720px; margin: 0 auto; display: flex; align-items: center; gap: 16px; }
+  .progress-area { flex: 1; }
+  .progress-label { font-size: 13px; font-weight: 600; color: var(--text-2); margin-bottom: 6px; }
+  .progress-label span { color: var(--text-1); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .progress-track { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 99px; background: var(--accent); transition: width .25s ease; }
+  .submit-btn { flex-shrink: 0; padding: 12px 26px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: background .15s, opacity .15s, transform .1s; white-space: nowrap; }
+  .submit-btn:hover:not(:disabled) { background: var(--accent-mid); transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: .35; cursor: not-allowed; }
+
+  /* ── Thank You ── */
+  .thankyou { display: none; max-width: 480px; margin: 72px auto 40px; text-align: center; padding: 44px 28px; background: var(--surface); border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid var(--border); }
+  .ty-icon { width: 60px; height: 60px; background: #20274C; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #fff; }
+  .thankyou h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 30px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 8px; color: var(--text-1); }
+  .thankyou p { font-size: 14px; color: var(--text-2); line-height: 1.65; margin-bottom: 20px; }
+  .ty-topics { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+  .ty-chip { font-size: 11.5px; font-weight: 600; padding: 3px 10px; background: var(--accent-light); color: var(--accent-text); border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent); border-radius: 20px; }
+
+  /* ── Results ── */
+  .results-view { display: none; max-width: 720px; margin: 32px auto; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: transparent; color: var(--text-2); border: 1px solid var(--border); border-radius: 8px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 18px; transition: background .15s; }
+  .back-btn:hover { background: var(--surface); }
+  .tabs { display: flex; gap: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 20px; background: var(--surface); box-shadow: var(--shadow-sm); }
+  .tab-btn { flex: 1; padding: 10px 16px; background: transparent; border: none; border-right: 1px solid var(--border); font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-2); cursor: pointer; transition: background .15s, color .15s; }
+  .tab-btn:last-child { border-right: none; }
+  .tab-btn.active { background: var(--accent-light); color: var(--accent); font-weight: 700; }
+  .tab-btn:hover:not(.active) { background: var(--surface-2); }
+  .results-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+  .results-header h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .vote-count-badge { font-size: 12px; font-weight: 600; color: var(--text-2); background: var(--surface); border: 1px solid var(--border); padding: 3px 10px; border-radius: 20px; font-variant-numeric: tabular-nums; }
+  .results-subtitle { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .result-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 12px 16px; margin-bottom: 7px; box-shadow: var(--shadow-sm); }
+  .result-row-top { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; }
+  .result-rank { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); flex-shrink: 0; width: 22px; font-family: 'Barlow Condensed', sans-serif; }
+  .result-name { font-size: 13.5px; font-weight: 500; color: var(--text-1); flex: 1; }
+  .result-pct { font-size: 12px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .result-bar-track { height: 5px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .result-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .5s ease; }
+  .person-row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 18px; margin-bottom: 8px; box-shadow: var(--shadow-sm); }
+  .person-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .person-name { font-size: 14px; font-weight: 600; color: var(--text-1); display: flex; align-items: center; gap: 8px; }
+  .person-avatar { width: 30px; height: 30px; border-radius: 50%; background: #20274C; color: #fff; font-size: 11px; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; letter-spacing: .04em; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .person-meta { font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+  .person-topics { display: flex; flex-wrap: wrap; gap: 5px; }
+  .person-chip { font-size: 11px; padding: 3px 9px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 20px; color: var(--text-2); font-weight: 500; }
+  .loading-msg { text-align: center; color: var(--text-3); font-size: 14px; padding: 48px; }
+  .error-msg { text-align: center; color: var(--warn); font-size: 13px; background: var(--warn-bg); padding: 14px; border-radius: 8px; margin: 16px 0; }
+
+  /* ── Manager Footer ── */
+  .manager-footer { text-align: center; padding: 32px 0 16px; max-width: 720px; margin: 0 auto; }
+  .manager-link { font-size: 11px; color: var(--text-3); background: none; border: none; cursor: pointer; font-family: 'Barlow', sans-serif; letter-spacing: .04em; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; padding: 4px 8px; border-radius: 4px; transition: color .15s; }
+  .manager-link:hover { color: var(--text-2); }
+
+  /* ── PIN Modal ── */
+  .pin-overlay { position: fixed; inset: 0; background: rgba(10,14,35,.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 16px; }
+  .pin-modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px 28px 24px; width: 100%; max-width: 360px; box-shadow: var(--shadow-md); text-align: center; }
+  .pin-modal-logo { display: flex; justify-content: center; margin-bottom: 14px; }
+  .pin-modal-logo svg { height: 24px; width: auto; }
+  .pin-modal h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 6px; color: var(--text-1); }
+  .pin-modal p { font-size: 13px; color: var(--text-2); margin-bottom: 18px; line-height: 1.55; }
+  .pin-input { width: 100%; padding: 11px 16px; font-family: 'Barlow', sans-serif; font-size: 15px; color: var(--text-1); background: var(--surface-2); border: 1.5px solid var(--border); border-radius: 8px; outline: none; text-align: center; letter-spacing: .2em; margin-bottom: 8px; transition: border-color .15s; }
+  .pin-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent); }
+  .pin-error-msg { font-size: 12px; color: var(--warn); margin-bottom: 12px; min-height: 16px; font-weight: 500; }
+  .pin-actions { display: flex; gap: 8px; }
+  .pin-confirm-btn { flex: 1; padding: 10px; background: #20274C; color: #fff; border: none; border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; cursor: pointer; transition: background .15s; }
+  .pin-confirm-btn:hover { background: #2D367A; }
+  .pin-cancel-btn { padding: 10px 16px; background: transparent; color: var(--text-2); border: 1px solid var(--border); border-radius: 8px; font-family: 'Barlow', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .15s; }
+  .pin-cancel-btn:hover { background: var(--surface-2); }
+
+  @media (prefers-reduced-motion: reduce) { .card, .submit-btn, .progress-fill, .result-bar-fill { transition: none; } }
+  .other-box { display: none; margin-top: 10px; }
+  .other-box textarea { width: 100%; box-sizing: border-box; border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 11px; font-size: 12.5px; font-family: inherit; line-height: 1.5; color: var(--text-1); background: var(--surface-2); resize: vertical; min-height: 72px; outline: none; transition: border-color .15s; }
+  .other-box textarea:focus { border-color: var(--accent); }
+  .other-box textarea::placeholder { color: var(--text-3); }
+  .card.selected .other-box { display: block; }
+  .card.selected .other-box textarea { background: var(--surface); }
+</style>
+
+</head>
+<body>
+<!-- Setup notice (shown only if SCRIPT_URL not yet configured) -->
+<div class="setup-banner" id="setup-banner">
+  ⚠️ Backend not configured yet — votes will not be saved. Complete the Google Sheets setup to activate.
+</div>
+
+<!-- GMG BRAND HEADER -->
+<div class="brand-header">
+  <div class="brand-header-inner">
+    <div class="gmg-logo">
+      <svg width="102" height="30" viewBox="0 0 102 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M31.3242 15H27.9247H18.3011V16.0193H27.8886C27.4468 23.0814 22.459 28.8041 16.0403 29.8342C9.31476 28.7554 4.15694 22.5254 4.15694 15C4.15694 7.47464 9.31476 1.24464 16.0403 0.165821C20.5345 0.886656 24.3259 3.90851 26.3491 8.0794H30.5051C28.1769 3.27936 23.5058 0 18.1183 0C17.4117 0 16.7187 0.0575497 16.0403 0.165821C15.362 0.0575497 14.6681 0 13.9624 0C6.25056 0 0 6.71576 0 15C0 23.2842 6.25056 30 13.9624 30C14.669 30 15.362 29.9424 16.0403 29.8342C16.7187 29.9424 17.4126 30 18.1183 30C25.8291 30 32.0807 23.2842 32.0807 15H31.3242Z" fill="white"/>
+        <path d="M39.4625 0.364746H35.4316V29.6361H39.4625V0.364746Z" fill="white"/>
+        <path d="M39.4629 0.364746L46.9694 29.6351H51.0013L43.4937 0.364746H39.4629Z" fill="white"/>
+        <path d="M62.5403 0.364746H62.5364H58.5085L51.002 29.6351H55.0328L62.5364 0.379377V29.6351H66.5673V0.364746H62.5403Z" fill="white"/>
+        <path d="M101.244 15H97.8437H88.22V16.0193H97.8075C97.3657 23.0814 92.378 28.8041 85.9593 29.8342C79.2337 28.7554 74.0759 22.5263 74.0759 15C74.0759 7.47464 79.2347 1.24464 85.9593 0.165821C90.4534 0.886656 94.2448 3.90851 96.2681 8.0794H100.424C98.0968 3.27936 93.4257 0 88.0382 0C87.3316 0 86.6386 0.0575497 85.9603 0.165821C85.2819 0.0575497 84.588 0 83.8823 0C76.1705 0 69.9199 6.71576 69.9199 15C69.9199 23.2842 76.1705 30 83.8823 30C84.5889 30 85.2819 29.9424 85.9603 29.8342C86.6386 29.9424 87.3325 30 88.0382 30C95.7491 30 102.001 23.2842 102.001 15H101.244Z" fill="white"/>
+      </svg>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div class="brand-dept">HRSS Learning</div>
+      <button class="header-manager-btn" type="button" onclick="openPinModal()">Manager View</button>
+    </div>
+  </div>
+</div>
+
+<!-- VOTING VIEW -->
+<div id="vote-view">
+  <div class="header">
+    <div class="header-eyebrow">FY 2026–27 Training Survey</div>
+    <h1>What Skills Do You<br>Want to Level Up?</h1>
+    <p>Select the topics most relevant to your role and growth.</p>
+    <div class="req-badge">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><line x1="8" y1="11" x2="8.01" y2="11"/></svg>
+      Select exactly 6 topics to submit
+    </div>
+  </div>
+
+  <div class="name-wrap">
+    <label class="name-label" for="voter-name">Full Name <span style="color:var(--warn)">*</span></label>
+    <input class="name-input" type="text" id="voter-name" placeholder="e.g. Sara Al Mansoori" autocomplete="name">
+    <div class="name-error" id="name-error">Please enter your full name.</div>
+  </div>
+  <div class="name-wrap">
+    <label class="name-label" for="voter-email">Work Email Address <span style="color:var(--warn)">*</span></label>
+    <input class="name-input" type="email" id="voter-email" placeholder="e.g. sara@gmg.com" autocomplete="email">
+    <div class="name-error" id="email-error">Please enter a valid email address.</div>
+  </div>
+
+  <div class="grid" id="topic-grid"></div>
+</div>
+
+<!-- STICKY BAR -->
+<div class="sticky-bar" id="sticky-bar">
+  <div class="sticky-inner">
+    <div class="progress-area">
+      <div class="progress-label"><span id="sel-count">0</span> of 6 selected</div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <button class="submit-btn" id="submit-btn" disabled onclick="submitVote()">Submit Vote</button>
+  </div>
+</div>
+
+<!-- THANK YOU -->
+<div class="thankyou" id="thankyou-view">
+  <div class="ty-icon">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <h2>Vote Submitted!</h2>
+  <p>Thanks for sharing your preferences. Your input will help shape the team's learning plan for the year ahead.</p>
+  <div class="ty-topics" id="ty-topics"></div>
+</div>
+
+<!-- PIN OVERLAY -->
+<div class="pin-overlay" id="pin-overlay" style="display:none">
+  <div class="pin-modal">
+    <div class="pin-modal-logo">
+      <svg width="102" height="30" viewBox="0 0 102 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M31.3242 15H27.9247H18.3011V16.0193H27.8886C27.4468 23.0814 22.459 28.8041 16.0403 29.8342C9.31476 28.7554 4.15694 22.5254 4.15694 15C4.15694 7.47464 9.31476 1.24464 16.0403 0.165821C20.5345 0.886656 24.3259 3.90851 26.3491 8.0794H30.5051C28.1769 3.27936 23.5058 0 18.1183 0C17.4117 0 16.7187 0.0575497 16.0403 0.165821C15.362 0.0575497 14.6681 0 13.9624 0C6.25056 0 0 6.71576 0 15C0 23.2842 6.25056 30 13.9624 30C14.669 30 15.362 29.9424 16.0403 29.8342C16.7187 29.9424 17.4126 30 18.1183 30C25.8291 30 32.0807 23.2842 32.0807 15H31.3242Z" fill="#20274C"/>
+        <path d="M39.4625 0.364746H35.4316V29.6361H39.4625V0.364746Z" fill="#20274C"/>
+        <path d="M39.4629 0.364746L46.9694 29.6351H51.0013L43.4937 0.364746H39.4629Z" fill="#20274C"/>
+        <path d="M62.5403 0.364746H62.5364H58.5085L51.002 29.6351H55.0328L62.5364 0.379377V29.6351H66.5673V0.364746H62.5403Z" fill="#20274C"/>
+        <path d="M101.244 15H97.8437H88.22V16.0193H97.8075C97.3657 23.0814 92.378 28.8041 85.9593 29.8342C79.2337 28.7554 74.0759 22.5263 74.0759 15C74.0759 7.47464 79.2347 1.24464 85.9593 0.165821C90.4534 0.886656 94.2448 3.90851 96.2681 8.0794H100.424C98.0968 3.27936 93.4257 0 88.0382 0C87.3316 0 86.6386 0.0575497 85.9603 0.165821C85.2819 0.0575497 84.588 0 83.8823 0C76.1705 0 69.9199 6.71576 69.9199 15C69.9199 23.2842 76.1705 30 83.8823 30C84.5889 30 85.2819 29.9424 85.9603 29.8342C86.6386 29.9424 87.3325 30 88.0382 30C95.7491 30 102.001 23.2842 102.001 15H101.244Z" fill="#20274C"/>
+      </svg>
+    </div>
+    <h3>Manager Access</h3>
+    <p>Enter your manager PIN to view team voting results.</p>
+    <input class="pin-input" type="password" id="pin-input" placeholder="••••••••" maxlength="20"
+           onkeydown="if(event.key==='Enter')checkPin()">
+    <div class="pin-error-msg" id="pin-error-msg"></div>
+    <div class="pin-actions">
+      <button class="pin-cancel-btn" onclick="closePinModal()">Cancel</button>
+      <button class="pin-confirm-btn" onclick="checkPin()">View Results</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANAGER FOOTER -->
+<div class="manager-footer" id="manager-footer">
+  <button class="manager-link" type="button" onclick="openPinModal()">Manager access · View results</button>
+</div>
+
+<!-- RESULTS VIEW -->
+<div class="results-view" id="results-view">
+  <button class="back-btn" onclick="goBack()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </button>
+  <div class="results-header">
+    <h2>Manager View · Team Voting Results</h2>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span class="vote-count-badge" id="vote-count-badge">— responses</span>
+      <button type="button" class="back-btn" style="margin:0;padding:5px 10px;" onclick="loadResults()">↻ Refresh</button>
+    </div>
+  </div>
+  <p class="results-subtitle">Switch between the topic tally and individual responses below.</p>
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-tally" onclick="switchTab('tally')">📊 Topic Tally</button>
+    <button class="tab-btn" id="tab-people" onclick="switchTab('people')">👥 By Person</button>
+  </div>
+  <div id="tally-panel" style="display:block"><div class="loading-msg">Loading…</div></div>
+  <div id="people-panel" style="display:none"><div class="loading-msg">Loading…</div></div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  CONFIGURATION
+//  Paste your Google Apps Script Web App URL below.
+//  Leave empty to see the setup notice.
+// ════════════════════════════════════════════════════════════
+const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbzHy9hFAofK7L_VS_KznAdBHVU6PEmnd4CcXBOXIC4euMOcxhb8g6ldL_cprjMjLJrL7Q/exec';
+const MANAGER_PIN = 'GMG@HR26';
+// ════════════════════════════════════════════════════════════
+
+const TOPICS = [
+  { id:1,  title:"UAE Labour Law & MENA HR Compliance",       desc:"Labour Law, EOSB, leave, WPS, MOHRE and key MENA requirements" },
+  { id:2,  title:"AI & Digital Tools for HR Operations",       desc:"AI tools, automation, productivity and simplifying HR processes" },
+  { id:3,  title:"Excel, HR Data & Reporting",                 desc:"Advanced Excel, data analysis, dashboards, reporting and data accuracy" },
+  { id:4,  title:"Service Excellence & SLA Management",        desc:"Employee experience, SLA ownership, case management and service recovery" },
+  { id:5,  title:"Stakeholder Influencing & Relationships",    desc:"Influencing HRBPs, Line Managers and other stakeholders without authority" },
+  { id:6,  title:"Difficult Conversations & Conflict",         desc:"Handling challenging employees, difficult messages, conflict and escalations" },
+  { id:7,  title:"Prioritisation, Ownership & Accountability", desc:"Managing workload, competing priorities, end-to-end ownership and follow-up" },
+  { id:8,  title:"Problem Solving & Root Cause Analysis",      desc:"Identifying recurring issues, RCA, corrective actions and process improvement" },
+  { id:9,  title:"Written & Verbal Communication",             desc:"Clear emails, professional responses, escalation updates and impactful communication" },
+  { id:10, title:"Coaching & Feedback Skills",                 desc:"Giving/receiving feedback, coaching colleagues and developing team capability" },
+  { id:11, title:"Attention to Detail & Quality",              desc:"Reducing errors/rework, quality checks, accuracy and process controls" },
+  { id:12, title:"HR Operations Excellence & Process",         desc:"Lean thinking, SOPs, process mapping, continuous improvement and efficiency" },
+  { id:13, title:"Other — My Own Suggestion",                 desc:"Have a different skill in mind? Select this and tell us what you'd like to learn" }
+];
+
+const MAX = 6;
+let selected  = new Set();
+let currentTab = 'tally';
+let allVotes   = [];
+const notConfigured = !SCRIPT_URL || SCRIPT_URL.startsWith('https://script.google.com') === false;
+
+// Show setup banner if not configured
+if (!SCRIPT_URL) document.getElementById('setup-banner').style.display = 'block';
+
+// ── Build topic grid ──
+const grid = document.getElementById('topic-grid');
+TOPICS.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.tabIndex = 0;
+  card.dataset.id = t.id;
+  const otherExtra = t.id === 13 ? `
+    <div class="other-box">
+      <textarea id="other-comment" placeholder="Tell us what skill or topic you'd like to learn…" maxlength="300"></textarea>
+    </div>` : '';
+  card.innerHTML = `
+    <div class="card-check">
+      <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8 7 12 13 4"/></svg>
+    </div>
+    <div class="card-body">
+      <div class="card-num">${String(t.id).padStart(2,'0')}</div>
+      <div class="card-title">${t.title}</div>
+      <div class="card-desc">${t.desc}</div>
+      ${otherExtra}
+    </div>`;
+  card.addEventListener('click', e => { if (e.target.tagName === 'TEXTAREA') return; toggleCard(t.id); });
+  card.addEventListener('keydown', e => { if(e.target.tagName==='TEXTAREA') return; if(e.key===' '||e.key==='Enter'){e.preventDefault();toggleCard(t.id);}});
+  grid.appendChild(card);
+});
+
+function toggleCard(id) {
+  if (selected.has(id)) { selected.delete(id); }
+  else { if (selected.size >= MAX) return; selected.add(id); }
+  updateUI();
+}
+function updateUI() {
+  const n = selected.size, full = n >= MAX;
+  document.getElementById('sel-count').textContent = n;
+  document.getElementById('progress-fill').style.width = Math.min(100,(n/MAX)*100)+'%';
+  document.getElementById('submit-btn').disabled = n < MAX;
+  document.querySelectorAll('.card').forEach(c => {
+    const id = parseInt(c.dataset.id);
+    c.classList.toggle('selected', selected.has(id));
+    c.classList.toggle('locked', full && !selected.has(id));
+  });
+}
+
+// ── Fetch votes via JSONP (avoids CORS) ──
+function fetchVotes() {
+  return new Promise(resolve => {
+    if (!SCRIPT_URL) { resolve([]); return; }
+
+    const cb = '_gmgcb' + Date.now();
+    const s  = document.createElement('script');
+    let finished = false;
+    let timer;
+
+    const finish = votes => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(timer);
+      delete window[cb];
+      s.remove();
+      resolve(Array.isArray(votes) ? votes : []);
+    };
+
+    window[cb] = data => finish(data && Array.isArray(data.votes) ? data.votes : []);
+    s.onerror = () => finish([]);
+
+    // Don't leave Manager View stuck on "Loading..." forever.
+    timer = setTimeout(() => finish([]), 10000);
+
+    s.src = SCRIPT_URL + '?callback=' + encodeURIComponent(cb) + '&_=' + Date.now();
+    document.head.appendChild(s);
+  });
+}
+
+// ── Submit vote ──
+async function submitVote() {
+  const nameEl  = document.getElementById('voter-name');
+  const emailEl = document.getElementById('voter-email');
+  const name    = nameEl.value.trim();
+  const email   = emailEl.value.trim().toLowerCase();
+  const nameErr  = document.getElementById('name-error');
+  const emailErr = document.getElementById('email-error');
+
+  nameErr.style.display  = 'none'; nameEl.style.borderColor  = '';
+  emailErr.style.display = 'none'; emailEl.style.borderColor = '';
+  emailErr.textContent   = 'Please enter a valid email address.';
+
+  let valid = true;
+  if (!name) { nameErr.style.display = 'block'; nameEl.style.borderColor = 'var(--warn)'; valid = false; }
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRe.test(email)) { emailErr.style.display = 'block'; emailEl.style.borderColor = 'var(--warn)'; valid = false; }
+  if (!valid) { nameEl.focus(); return; }
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true; btn.textContent = 'Checking…';
+
+  // Check for duplicate email
+  if (SCRIPT_URL) {
+    const existing = await fetchVotes();
+    const dup = existing.find(v => v.email && v.email.toLowerCase() === email);
+    if (dup) {
+      emailErr.textContent = 'This email has already submitted a vote.';
+      emailErr.style.display = 'block'; emailEl.style.borderColor = 'var(--warn)';
+      btn.disabled = false; btn.textContent = 'Submit Vote';
+      return;
+    }
+  }
+
+  btn.textContent = 'Submitting…';
+  const topicIds = Array.from(selected).sort((a,b)=>a-b);
+  const otherComment = (document.getElementById('other-comment')?.value || '').trim();
+
+  // POST to Google Apps Script (no-cors — fire and forget)
+  if (SCRIPT_URL) {
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode:   'no-cors',
+        body:   JSON.stringify({ name, email, topics: topicIds, otherComment, timestamp: new Date().toISOString() })
+      });
+    } catch(e) { /* no-cors fetch always resolves; errors silently fail */ }
+  }
+
+  // Show thank-you chips
+  const tyChips = document.getElementById('ty-topics');
+  tyChips.innerHTML = '';
+  topicIds.forEach(id => {
+    const t = TOPICS.find(x=>x.id===id);
+    const chip = document.createElement('div');
+    chip.className = 'ty-chip';
+    chip.textContent = (id === 13 && otherComment) ? 'Other: ' + otherComment : t.title;
+    tyChips.appendChild(chip);
+  });
+
+  document.getElementById('vote-view').style.display  = 'none';
+  document.getElementById('sticky-bar').style.display = 'none';
+  document.getElementById('thankyou-view').style.display = 'block';
+}
+
+// ── PIN / Manager ──
+function openPinModal() {
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error-msg').textContent = '';
+  document.getElementById('pin-overlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('pin-input').focus(), 50);
+}
+function closePinModal() { document.getElementById('pin-overlay').style.display = 'none'; }
+function checkPin() {
+  const entered = document.getElementById('pin-input').value;
+  if (entered === MANAGER_PIN) { closePinModal(); showResults(); }
+  else {
+    document.getElementById('pin-error-msg').textContent = 'Incorrect PIN. Please try again.';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+  }
+}
+
+// ── Results ──
+async function showResults() {
+  document.getElementById('vote-view').style.display     = 'none';
+  document.getElementById('sticky-bar').style.display    = 'none';
+  document.getElementById('thankyou-view').style.display = 'none';
+  document.getElementById('manager-footer').style.display = 'none';
+  document.getElementById('results-view').style.display  = 'block';
+  await loadResults();
+}
+
+async function loadResults() {
+  if (!SCRIPT_URL) {
+    document.getElementById('tally-panel').innerHTML =
+      '<div class="error-msg">Backend not configured — add your Google Apps Script Web App URL first.</div>';
+    return;
+  }
+
+  document.getElementById('tally-panel').innerHTML =
+    '<div class="loading-msg">Loading results…</div>';
+  document.getElementById('people-panel').innerHTML =
+    '<div class="loading-msg">Loading results…</div>';
+
+  try {
+    allVotes = await fetchVotes();
+
+    document.getElementById('vote-count-badge').textContent =
+      allVotes.length + (allVotes.length === 1 ? ' response' : ' responses');
+
+    renderCurrent();
+
+    if (!allVotes.length) {
+      const panel = document.getElementById(
+        currentTab === 'tally' ? 'tally-panel' : 'people-panel'
+      );
+      if (panel) {
+        const note = document.createElement('div');
+        note.className = 'error-msg';
+        note.style.marginTop = '12px';
+        note.innerHTML =
+          'No responses were returned. If votes already exist in Google Sheets, ' +
+          'check that the Apps Script Web App is deployed and that its GET response ' +
+          'supports the callback parameter used by this page.';
+        panel.appendChild(note);
+      }
+    }
+  } catch(e) {
+    document.getElementById('tally-panel').innerHTML =
+      '<div class="error-msg">Could not load results. Please check the Apps Script Web App and try again.</div>';
+  }
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('tab-tally').classList.toggle('active', tab==='tally');
+  document.getElementById('tab-people').classList.toggle('active', tab==='people');
+  document.getElementById('tally-panel').style.display  = tab==='tally'  ? 'block' : 'none';
+  document.getElementById('people-panel').style.display = tab==='people' ? 'block' : 'none';
+
+  // IMPORTANT: Do not fetch Google Apps Script again when switching tabs.
+  // The results were already loaded by showResults()/loadResults().
+  // Re-fetching here could leave the second tab stuck on "Loading…".
+  renderCurrent();
+}
+
+function renderCurrent() { currentTab==='tally' ? renderTally() : renderPeople(); }
+
+function renderTally() {
+  const panel = document.getElementById('tally-panel');
+  const total = allVotes.length;
+  const tally = {}; TOPICS.forEach(t => { tally[t.id] = 0; });
+  allVotes.forEach(v => { (v.topics||[]).forEach(id => { if(tally[id]!==undefined) tally[id]++; }); });
+  const sorted = TOPICS.map(t=>({...t, votes:tally[t.id]})).sort((a,b)=>b.votes-a.votes);
+  const maxV   = sorted[0]?.votes || 1;
+  panel.innerHTML = '';
+  sorted.forEach((t,i) => {
+    const pct  = total>0 ? Math.round((t.votes/total)*100) : 0;
+    const barW = total>0 ? Math.round((t.votes/maxV)*100) : 0;
+    const row  = document.createElement('div');
+    row.className = 'result-row';
+    row.innerHTML = `
+      <div class="result-row-top">
+        <span class="result-rank">#${i+1}</span>
+        <span class="result-name">${t.title}</span>
+        <span class="result-pct">${t.votes} vote${t.votes!==1?'s':''} &nbsp;·&nbsp; ${pct}%</span>
+      </div>
+      <div class="result-bar-track"><div class="result-bar-fill" style="width:${barW}%"></div></div>`;
+    panel.appendChild(row);
+  });
+  if (!total) { panel.innerHTML = '<div class="loading-msg">No votes yet — share the link with your team!</div>'; return; }
+
+  // Write-in suggestions from the "Other" option
+  const suggestions = allVotes
+    .filter(v => v.otherComment && String(v.otherComment).trim())
+    .map(v => ({ who: (v.name||'Anonymous').trim(), text: String(v.otherComment).trim() }));
+  if (suggestions.length) {
+    const box = document.createElement('div');
+    box.style.cssText = 'margin-top:22px;padding-top:18px;border-top:1.5px solid var(--border)';
+    box.innerHTML = `<div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--text-1);margin-bottom:10px">Write-in suggestions (${suggestions.length})</div>` +
+      suggestions.map(s => `<div style="background:var(--surface-2);border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:8px"><div style="font-size:12.5px;line-height:1.5;color:var(--text-1)">${s.text}</div><div style="font-size:10.5px;color:var(--text-3);margin-top:4px">— ${s.who}</div></div>`).join('');
+    panel.appendChild(box);
+  }
+}
+
+function renderPeople() {
+  const panel = document.getElementById('people-panel');
+  panel.innerHTML = '';
+  if (!allVotes.length) { panel.innerHTML = '<div class="loading-msg">No responses yet.</div>'; return; }
+  const sorted = [...allVotes].sort((a,b) => new Date(b.timestamp||0) - new Date(a.timestamp||0));
+  sorted.forEach(v => {
+    const name     = (v.name && v.name.trim()) ? v.name.trim() : 'Anonymous';
+    const initials = name.split(' ').filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase() || '?';
+    const topicIds = Array.isArray(v.topics) ? [...v.topics].sort((a,b)=>a-b) : [];
+    let ts = '';
+    try { ts = v.timestamp ? new Date(v.timestamp).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : ''; } catch(e){}
+    const chips    = topicIds.map(id => {
+      const t = TOPICS.find(x=>x.id===id||x.id===Number(id));
+      let label = t ? t.title : 'Topic '+id;
+      if (Number(id) === 13 && v.otherComment) label = 'Other: ' + v.otherComment;
+      return `<span class="person-chip">${label}</span>`;
+    }).join('');
+    const emailLine = v.email ? `<div style="font-size:11px;color:var(--text-3);font-weight:400;margin-top:1px">${v.email}</div>` : '';
+    const row = document.createElement('div');
+    row.className = 'person-row';
+    row.innerHTML = `
+      <div class="person-header">
+        <div class="person-name">
+          <div class="person-avatar">${initials}</div>
+          <div><div>${name}</div>${emailLine}</div>
+        </div>
+        <div class="person-meta">${topicIds.length} topic${topicIds.length!==1?'s':''}&nbsp;·&nbsp;${ts}</div>
+      </div>
+      <div class="person-topics">${chips||'<span class="person-chip" style="color:var(--text-3)">No topics</span>'}</div>`;
+    panel.appendChild(row);
+  });
+}
+
+function goBack() {
+  document.getElementById('results-view').style.display   = 'none';
+  document.getElementById('manager-footer').style.display = 'block';
+  document.getElementById('vote-view').style.display      = 'block';
+  document.getElementById('sticky-bar').style.display     = 'block';
+}
+
+// Init
+document.getElementById('pin-overlay').addEventListener('click', function(e){
+  if (e.target === this) closePinModal();
+});
+</script>
+
+</body>
+</html>
